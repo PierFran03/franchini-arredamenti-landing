@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Phone } from "lucide-react";
-import logo from "@/assets/logo-franchini.jpg";
+import logo from "@/assets/logo-franchini.svg";
 
 const navItems = [
   { label: "Collezioni", href: "#collezioni" },
@@ -32,8 +32,10 @@ export const Header = () => {
           <img
             src={logo}
             alt="Logo Franchini Arredamenti"
-            className="h-12 w-12 rounded-full object-cover ring-1 ring-border"
-            width={48}
+            className={`h-12 w-auto object-contain transition-smooth ${
+              scrolled ? "" : "brightness-0 invert"
+            }`}
+            width={72}
             height={48}
           />
           <div className="hidden sm:block leading-tight">
