@@ -1,0 +1,82 @@
+import { useEffect, useState } from "react";
+import { Phone } from "lucide-react";
+import logo from "@/assets/logo-franchini.jpg";
+
+const navItems = [
+  { label: "Collezioni", href: "#collezioni" },
+  { label: "Servizi", href: "#servizi" },
+  { label: "Storia", href: "#storia" },
+  { label: "Contatti", href: "#contatti" },
+];
+
+export const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-elegant ${
+        scrolled
+          ? "bg-background/90 backdrop-blur-md border-b border-border shadow-soft"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+        <a href="#top" className="flex items-center gap-3" aria-label="Franchini Arredamenti — Home">
+          <img
+            src={logo}
+            alt="Logo Franchini Arredamenti"
+            className="h-12 w-12 rounded-full object-cover ring-1 ring-border"
+            width={48}
+            height={48}
+          />
+          <div className="hidden sm:block leading-tight">
+            <div
+              className={`font-display text-xl tracking-wide ${
+                scrolled ? "text-foreground" : "text-brand-cream"
+              }`}
+            >
+              Franchini
+            </div>
+            <div
+              className={`text-[11px] uppercase tracking-[0.25em] ${
+                scrolled ? "text-muted-foreground" : "text-brand-cream/80"
+              }`}
+            >
+              Arredamenti
+            </div>
+          </div>
+        </a>
+
+        <nav className="hidden lg:flex items-center gap-8">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className={`text-sm tracking-wide transition-smooth hover:text-brand-brass ${
+                scrolled ? "text-foreground/80" : "text-brand-cream/90"
+              }`}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
+        <a
+          href="tel:+390992233295"
+          className="inline-flex items-center gap-2 rounded-sm bg-brand-brass px-4 py-2.5 text-sm font-medium text-accent-foreground shadow-brass transition-smooth hover:bg-brand-brass-light"
+        >
+          <Phone className="h-4 w-4" />
+          <span className="hidden sm:inline">099 22 33 295</span>
+          <span className="sm:hidden">Chiama</span>
+        </a>
+      </div>
+    </header>
+  );
+};
