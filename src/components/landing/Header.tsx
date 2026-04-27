@@ -38,22 +38,6 @@ export const Header = () => {
             width={72}
             height={48}
           />
-          <div className="hidden sm:block leading-tight">
-            <div
-              className={`font-display text-xl tracking-wide ${
-                scrolled ? "text-foreground" : "text-brand-cream"
-              }`}
-            >
-              Franchini
-            </div>
-            <div
-              className={`text-[11px] uppercase tracking-[0.25em] ${
-                scrolled ? "text-muted-foreground" : "text-brand-cream/80"
-              }`}
-            >
-              Arredamenti
-            </div>
-          </div>
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">
