@@ -13,7 +13,19 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
+        brand: {
+          walnut: "hsl(var(--brand-walnut))",
+          "walnut-deep": "hsl(var(--brand-walnut-deep))",
+          brass: "hsl(var(--brand-brass))",
+          "brass-light": "hsl(var(--brand-brass-light))",
+          cream: "hsl(var(--brand-cream))",
+          sand: "hsl(var(--brand-sand))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
