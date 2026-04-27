@@ -1,4 +1,4 @@
-import logo from "@/assets/logo-franchini.jpg";
+import logo from "@/assets/logo-franchini.svg";
 
 export const Footer = () => {
   return (
@@ -9,8 +9,8 @@ export const Footer = () => {
             <img
               src={logo}
               alt="Franchini Arredamenti"
-              className="h-10 w-10 rounded-full object-cover"
-              width={40}
+              className="h-10 w-auto object-contain brightness-0 invert opacity-90"
+              width={60}
               height={40}
               loading="lazy"
             />
