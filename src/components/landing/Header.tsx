@@ -27,16 +27,16 @@ export const Header = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+      <div className={`container mx-auto flex items-center justify-between px-4 transition-elegant ${scrolled ? "h-20" : "h-28"}`}>
         <a href="#top" className="flex items-center gap-3" aria-label="Franchini Arredamenti — Home">
           <img
             src={logo}
             alt="Logo Franchini Arredamenti"
-            className={`h-12 w-auto object-contain transition-smooth ${
-              scrolled ? "" : "brightness-0 invert"
+            className={`w-auto object-contain transition-elegant drop-shadow-lg ${
+              scrolled ? "h-14" : "h-20 brightness-0 invert"
             }`}
-            width={72}
-            height={48}
+            width={120}
+            height={80}
           />
         </a>
 

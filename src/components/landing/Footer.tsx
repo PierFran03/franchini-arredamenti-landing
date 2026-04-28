@@ -9,14 +9,14 @@ export const Footer = () => {
             <img
               src={logo}
               alt="Franchini Arredamenti"
-              className="h-10 w-auto object-contain brightness-0 invert opacity-90"
-              width={60}
-              height={40}
+              className="h-20 w-auto object-contain brightness-0 invert"
+              width={120}
+              height={80}
               loading="lazy"
             />
             <div className="leading-tight">
-              <div className="font-display text-lg text-brand-cream">Franchini Arredamenti</div>
-              <div className="text-xs uppercase tracking-widest">San Giorgio Ionico · TA</div>
+              <div className="text-xs uppercase tracking-[0.25em] text-brand-brass-light">Showroom</div>
+              <div className="text-sm text-brand-cream/80">San Giorgio Ionico · TA</div>
             </div>
           </div>
 
