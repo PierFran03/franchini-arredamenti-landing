@@ -1,6 +1,9 @@
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo-franchini.svg";
+import { useSiteData } from "@/hooks/useSiteData";
 
 export const Footer = () => {
+  const { footer } = useSiteData();
   return (
     <footer className="border-t border-brand-walnut/20 bg-brand-walnut-deep py-12 text-brand-cream/70">
       <div className="container mx-auto px-4">
@@ -16,14 +19,17 @@ export const Footer = () => {
             />
             <div className="leading-tight">
               <div className="text-xs uppercase tracking-[0.25em] text-brand-brass-light">Showroom</div>
-              <div className="text-sm text-brand-cream/80">San Giorgio Ionico · TA</div>
+              <div className="text-sm text-brand-cream/80">{footer.showroom}</div>
             </div>
           </div>
 
           <div className="text-center text-sm md:text-right">
             <div>© {new Date().getFullYear()} Franchini Arredamenti — Tutti i diritti riservati</div>
             <div className="mt-1 text-xs">
-              P. Iva — Showroom Via Roma 61/63, 74027 San Giorgio Ionico (TA)
+              {footer.vat} — {footer.address}
+            </div>
+            <div className="mt-2 text-xs">
+              <Link to="/auth" className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Area riservata</Link>
             </div>
           </div>
         </div>
