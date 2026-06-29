@@ -7,7 +7,6 @@ import logo from "@/assets/logo-franchini.svg";
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,18 +25,8 @@ const Auth = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
-        });
-        if (error) throw error;
-        toast({ title: "Account creato", description: "Accesso effettuato." });
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
     } catch (err: any) {
       toast({ title: "Errore", description: err.message, variant: "destructive" });
     } finally {
@@ -53,7 +42,7 @@ const Auth = () => {
         </Link>
         <h1 className="text-center font-display text-3xl mb-2">Area Riservata</h1>
         <p className="text-center text-sm text-muted-foreground mb-8">
-          {mode === "signin" ? "Accedi per gestire i contenuti del sito" : "Crea l'account amministratore"}
+          Accedi per gestire i contenuti del sito
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -67,7 +56,7 @@ const Auth = () => {
           <div>
             <label className="mb-2 block text-xs uppercase tracking-widest text-muted-foreground">Password</label>
             <input
-              required type="password" minLength={6} value={password} onChange={(e) => setPassword(e.target.value)}
+              required type="password" value={password} onChange={(e) => setPassword(e.target.value)}
               className="w-full border-b border-input bg-transparent py-3 outline-none focus:border-brand-brass"
             />
           </div>
@@ -75,18 +64,11 @@ const Auth = () => {
             type="submit" disabled={loading}
             className="w-full rounded-sm bg-brand-brass px-8 py-4 text-sm font-medium uppercase tracking-widest text-accent-foreground shadow-brass transition-smooth hover:bg-brand-brass-light disabled:opacity-60"
           >
-            {loading ? "Attendi..." : mode === "signin" ? "Accedi" : "Crea account"}
+            {loading ? "Attendi..." : "Accedi"}
           </button>
         </form>
 
-        <button
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="mt-6 w-full text-center text-xs uppercase tracking-widest text-muted-foreground hover:text-brand-brass transition-smooth"
-        >
-          {mode === "signin" ? "Non hai un account? Registrati" : "Hai già un account? Accedi"}
-        </button>
-
-        <Link to="/" className="mt-4 block text-center text-xs text-muted-foreground hover:text-brand-brass transition-smooth">
+        <Link to="/" className="mt-6 block text-center text-xs text-muted-foreground hover:text-brand-brass transition-smooth">
           ← Torna al sito
         </Link>
       </div>
