@@ -1,9 +1,11 @@
 import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useSiteData } from "@/hooks/useSiteData";
 
 export const Contact = () => {
   const { toast } = useToast();
+  const { contact } = useSiteData();
   const [sending, setSending] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -15,7 +17,7 @@ export const Contact = () => {
     const body = encodeURIComponent(
       `Nome: ${data.get("name")}\nTelefono: ${data.get("phone")}\nEmail: ${data.get("email")}\n\nMessaggio:\n${data.get("message")}`
     );
-    window.location.href = `mailto:info@franchiniarredamenti.it?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
     setTimeout(() => {
       setSending(false);
       toast({
@@ -51,28 +53,20 @@ export const Contact = () => {
                 <div className="flex gap-4">
                   <MapPin className="h-5 w-5 shrink-0 text-brand-brass-light" />
                   <div>
-                    <div className="font-medium">Via Roma, 61-63</div>
-                    <div className="text-sm text-brand-cream/70">74027 San Giorgio Ionico (TA)</div>
+                    <div className="font-medium">{contact.address}</div>
                   </div>
                 </div>
-                <a href="tel:+390992233295" className="flex gap-4 transition-smooth hover:text-brand-brass-light">
+                <a href={contact.phone_href} className="flex gap-4 transition-smooth hover:text-brand-brass-light">
                   <Phone className="h-5 w-5 shrink-0 text-brand-brass-light" />
-                  <div>
-                    <div className="font-medium">+39 099 22 33 295</div>
-                    <div className="text-sm text-brand-cream/70">377 30 45 176</div>
-                  </div>
+                  <div className="font-medium">{contact.phone}</div>
                 </a>
-                <a href="mailto:info@franchiniarredamenti.it" className="flex gap-4 transition-smooth hover:text-brand-brass-light">
+                <a href={`mailto:${contact.email}`} className="flex gap-4 transition-smooth hover:text-brand-brass-light">
                   <Mail className="h-5 w-5 shrink-0 text-brand-brass-light" />
-                  <div className="font-medium break-all">info@franchiniarredamenti.it</div>
+                  <div className="font-medium break-all">{contact.email}</div>
                 </a>
                 <div className="flex gap-4">
                   <Clock className="h-5 w-5 shrink-0 text-brand-brass-light" />
-                  <div className="space-y-1 text-sm">
-                    <div><span className="text-brand-cream/70">Lunedì:</span> 17:00 – 20:30</div>
-                    <div><span className="text-brand-cream/70">Mar – Sab:</span> 09:30 – 13:00 · 17:00 – 20:30</div>
-                    <div><span className="text-brand-cream/70">Domenica:</span> chiuso</div>
-                  </div>
+                  <div className="space-y-1 text-sm whitespace-pre-line">{contact.hours}</div>
                 </div>
               </div>
             </div>
