@@ -96,8 +96,16 @@ const Admin = () => {
   };
 
   const saveContent = async (key: string, value: any) => {
-    const { error } = await supabase.from("site_content").upsert({ key, value });
+    const { error } = await supabase
+      .from("site_content")
+      .upsert({ key, value }, { onConflict: "key" });
     if (error) throw error;
+  };
+
+  const assertSaved = (error: any, label: string) => {
+    if (error) {
+      throw new Error(`${label}: ${error.message}`);
+    }
   };
 
   const handleSaveAll = async () => {
@@ -111,19 +119,23 @@ const Admin = () => {
         saveContent("contact", data.contact),
         saveContent("footer", data.footer),
       ]);
-      // services
-      for (const s of data.services) {
-        await supabase.from("services").upsert({
+      const serviceResults = await Promise.all(data.services.map((s) =>
+        supabase.from("services").upsert({
           id: s.id, sort_order: s.sort_order, icon: s.icon, label: s.label, description: s.description,
-        });
-      }
-      // collections
-      for (const c of data.collections) {
-        await supabase.from("collections").upsert({
+        }, { onConflict: "id" })
+      ));
+      serviceResults.forEach(({ error }, index) => assertSaved(error, `Servizio ${index + 1}`));
+
+      const collectionResults = await Promise.all(data.collections.map((c) =>
+        supabase.from("collections").upsert({
           id: c.id, sort_order: c.sort_order, title: c.title, description: c.description,
           image_url: c.image_url, span: c.span, cta_href: c.cta_href,
-        });
-      }
+        }, { onConflict: "id" })
+      ));
+      collectionResults.forEach(({ error }, index) => assertSaved(error, `Collezione ${index + 1}`));
+
+      const fresh = await fetchSiteData();
+      if (fresh) setData(fresh);
       toast({ title: "Salvato", description: "Modifiche pubblicate." });
     } catch (err: any) {
       toast({ title: "Errore salvataggio", description: err.message, variant: "destructive" });
