@@ -2,6 +2,7 @@ import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSiteData } from "@/hooks/useSiteData";
+import { AppointmentBooking } from "./AppointmentBooking";
 
 export const Contact = () => {
   const { toast } = useToast();
