@@ -64,6 +64,106 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
   </section>
 );
 
+const CollectionGallery = ({ collectionId }: { collectionId: string }) => {
+  const { toast } = useToast();
+  const [images, setImages] = useState<CollectionImage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const imgs = await fetchCollectionImages(collectionId);
+      setImages(imgs);
+      setLoading(false);
+    })();
+  }, [collectionId]);
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setUploading(true);
+    try {
+      const start = (images.at(-1)?.sort_order ?? -1) + 1;
+      const uploaded = await Promise.all(files.map((f) => uploadSiteImage(f)));
+      const rows = uploaded.map((url, i) => ({
+        collection_id: collectionId, image_url: url, alt: "", sort_order: start + i,
+      }));
+      const { data: inserted, error } = await supabase.from("collection_images" as any).insert(rows).select();
+      if (error) throw error;
+      setImages((prev) => [...prev, ...((inserted as any) || [])]);
+      toast({ title: `${files.length} immagine/i caricata/e` });
+    } catch (err: any) {
+      toast({ title: "Errore upload", description: err.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  const updateAlt = async (id: string, alt: string) => {
+    setImages((prev) => prev.map((i) => i.id === id ? { ...i, alt } : i));
+  };
+  const saveAlt = async (id: string, alt: string) => {
+    await supabase.from("collection_images" as any).update({ alt }).eq("id", id);
+  };
+  const remove = async (id: string) => {
+    if (!confirm("Eliminare questa foto?")) return;
+    await supabase.from("collection_images" as any).delete().eq("id", id);
+    setImages((prev) => prev.filter((i) => i.id !== id));
+  };
+  const move = async (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= images.length) return;
+    const a = images[i], b = images[j];
+    const newArr = [...images];
+    newArr[i] = { ...b, sort_order: a.sort_order };
+    newArr[j] = { ...a, sort_order: b.sort_order };
+    setImages(newArr);
+    await Promise.all([
+      supabase.from("collection_images" as any).update({ sort_order: a.sort_order }).eq("id", b.id),
+      supabase.from("collection_images" as any).update({ sort_order: b.sort_order }).eq("id", a.id),
+    ]);
+  };
+
+  return (
+    <div className="md:col-span-2 rounded-sm border border-dashed border-border bg-secondary/30 p-4">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground">Galleria realizzazioni ({images.length})</span>
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-sm border border-input bg-background px-3 py-1.5 text-xs uppercase tracking-widest hover:border-brand-brass">
+          <Upload className="h-3.5 w-3.5" />
+          {uploading ? "Caricamento..." : "Aggiungi foto"}
+          <input type="file" accept="image/*" multiple className="hidden" onChange={handleUpload} disabled={uploading} />
+        </label>
+      </div>
+      {loading ? (
+        <div className="text-xs text-muted-foreground">Caricamento...</div>
+      ) : images.length === 0 ? (
+        <div className="text-xs text-muted-foreground">Nessuna foto. Carica le immagini delle realizzazioni di questa collezione.</div>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {images.map((img, i) => (
+            <div key={img.id} className="rounded-sm border border-border bg-background p-2">
+              <img src={img.image_url} alt={img.alt} className="aspect-[4/3] w-full rounded-sm object-cover" />
+              <input value={img.alt} placeholder="Testo alternativo"
+                onChange={(e) => updateAlt(img.id, e.target.value)}
+                onBlur={(e) => saveAlt(img.id, e.target.value)}
+                className="mt-2 w-full rounded-sm border border-input px-2 py-1 text-xs" />
+              <div className="mt-1 flex items-center justify-between">
+                <div className="flex gap-1">
+                  <button onClick={() => move(i, -1)} className="p-1 hover:text-brand-brass"><ArrowUp className="h-3.5 w-3.5" /></button>
+                  <button onClick={() => move(i, 1)} className="p-1 hover:text-brand-brass"><ArrowDown className="h-3.5 w-3.5" /></button>
+                </div>
+                <button onClick={() => remove(img.id)} className="p-1 hover:text-destructive"><Trash2 className="h-3.5 w-3.5" /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
