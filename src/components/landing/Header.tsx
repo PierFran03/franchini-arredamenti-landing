@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Phone } from "lucide-react";
+import { CalendarCheck } from "lucide-react";
+
 import logo from "@/assets/logo-franchini.svg";
 
 const navItems = [
