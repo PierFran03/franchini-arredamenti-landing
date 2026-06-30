@@ -164,9 +164,11 @@ export const AppointmentBooking = () => {
 
   return (
     <form
+      id="prenota"
       onSubmit={handleSubmit}
-      className="space-y-6 rounded-sm border border-border bg-card p-8 shadow-soft md:p-10"
+      className="scroll-mt-24 space-y-6 rounded-sm border border-border bg-card p-8 shadow-soft md:p-10"
     >
+
       <div>
         <h3 className="font-display text-2xl">Prenota un appuntamento</h3>
         <p className="mt-2 text-sm text-muted-foreground">
