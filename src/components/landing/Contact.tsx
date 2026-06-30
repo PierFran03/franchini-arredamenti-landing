@@ -85,67 +85,10 @@ export const Contact = () => {
             </a>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-5 rounded-sm border border-border bg-card p-8 shadow-soft lg:col-span-3 md:p-10"
-          >
-            <div className="grid gap-5 sm:grid-cols-2">
-              <div>
-                <label htmlFor="name" className="mb-2 block text-xs uppercase tracking-widest text-muted-foreground">Nome e Cognome</label>
-                <input
-                  required
-                  id="name"
-                  name="name"
-                  type="text"
-                  className="w-full border-b border-input bg-transparent py-3 text-foreground outline-none transition-smooth focus:border-brand-brass"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="mb-2 block text-xs uppercase tracking-widest text-muted-foreground">Telefono</label>
-                <input
-                  required
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  className="w-full border-b border-input bg-transparent py-3 text-foreground outline-none transition-smooth focus:border-brand-brass"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="email" className="mb-2 block text-xs uppercase tracking-widest text-muted-foreground">Email</label>
-              <input
-                required
-                id="email"
-                name="email"
-                type="email"
-                className="w-full border-b border-input bg-transparent py-3 text-foreground outline-none transition-smooth focus:border-brand-brass"
-              />
-            </div>
-            <div>
-              <label htmlFor="message" className="mb-2 block text-xs uppercase tracking-widest text-muted-foreground">Cosa vorresti arredare?</label>
-              <textarea
-                required
-                id="message"
-                name="message"
-                rows={4}
-                placeholder="Racconta brevemente il tuo progetto..."
-                className="w-full resize-none border-b border-input bg-transparent py-3 text-foreground outline-none transition-smooth placeholder:text-muted-foreground/60 focus:border-brand-brass"
-              />
-            </div>
+          <div className="lg:col-span-3">
+            <AppointmentBooking />
+          </div>
 
-            <button
-              type="submit"
-              disabled={sending}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-sm bg-brand-brass px-8 py-4 text-sm font-medium uppercase tracking-widest text-accent-foreground shadow-brass transition-smooth hover:bg-brand-brass-light disabled:opacity-60 sm:w-auto"
-            >
-              {sending ? "Invio..." : "Invia richiesta"}
-              <ArrowRight className="h-4 w-4 transition-smooth group-hover:translate-x-1" />
-            </button>
-
-            <p className="text-xs text-muted-foreground">
-              Inviando il modulo accetti di essere ricontattato. I tuoi dati non saranno condivisi con terzi.
-            </p>
-          </form>
         </div>
       </div>
     </section>
