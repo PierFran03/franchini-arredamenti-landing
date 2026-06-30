@@ -75,7 +75,41 @@ export type Collection = {
   image_url: string;
   span: string;
   cta_href: string;
+  slug?: string | null;
 };
+
+export type CollectionImage = {
+  id: string;
+  collection_id: string;
+  image_url: string;
+  alt: string;
+  sort_order: number;
+};
+
+export function collectionHref(c: Pick<Collection, "slug" | "cta_href">) {
+  if (c.slug) return `/collezioni/${c.slug}`;
+  return c.cta_href || "#contatti";
+}
+
+export async function fetchCollectionBySlug(slug: string): Promise<{ collection: Collection; images: CollectionImage[] } | null> {
+  const { data: col } = await supabase.from("collections").select("*").eq("slug", slug).maybeSingle();
+  if (!col) return null;
+  const { data: imgs } = await supabase
+    .from("collection_images" as any)
+    .select("*")
+    .eq("collection_id", (col as any).id)
+    .order("sort_order");
+  return { collection: col as any, images: (imgs as any) || [] };
+}
+
+export async function fetchCollectionImages(collectionId: string): Promise<CollectionImage[]> {
+  const { data } = await supabase
+    .from("collection_images" as any)
+    .select("*")
+    .eq("collection_id", collectionId)
+    .order("sort_order");
+  return (data as any) || [];
+}
 
 export type SiteData = {
   hero: HeroContent;

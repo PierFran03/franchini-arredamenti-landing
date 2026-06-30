@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { fetchSiteData, DEFAULTS, SiteData, Collection, Service } from "@/hooks/useSiteData";
+import { fetchSiteData, DEFAULTS, SiteData, Collection, Service, CollectionImage, fetchCollectionImages } from "@/hooks/useSiteData";
 import { uploadSiteImage } from "@/lib/storage";
 import { LogOut, Save, Upload, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import logo from "@/assets/logo-franchini.svg";
@@ -63,6 +63,106 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
     <div className="grid gap-4 md:grid-cols-2">{children}</div>
   </section>
 );
+
+const CollectionGallery = ({ collectionId }: { collectionId: string }) => {
+  const { toast } = useToast();
+  const [images, setImages] = useState<CollectionImage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const imgs = await fetchCollectionImages(collectionId);
+      setImages(imgs);
+      setLoading(false);
+    })();
+  }, [collectionId]);
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setUploading(true);
+    try {
+      const start = (images.at(-1)?.sort_order ?? -1) + 1;
+      const uploaded = await Promise.all(files.map((f) => uploadSiteImage(f)));
+      const rows = uploaded.map((url, i) => ({
+        collection_id: collectionId, image_url: url, alt: "", sort_order: start + i,
+      }));
+      const { data: inserted, error } = await supabase.from("collection_images" as any).insert(rows).select();
+      if (error) throw error;
+      setImages((prev) => [...prev, ...((inserted as any) || [])]);
+      toast({ title: `${files.length} immagine/i caricata/e` });
+    } catch (err: any) {
+      toast({ title: "Errore upload", description: err.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  const updateAlt = async (id: string, alt: string) => {
+    setImages((prev) => prev.map((i) => i.id === id ? { ...i, alt } : i));
+  };
+  const saveAlt = async (id: string, alt: string) => {
+    await supabase.from("collection_images" as any).update({ alt }).eq("id", id);
+  };
+  const remove = async (id: string) => {
+    if (!confirm("Eliminare questa foto?")) return;
+    await supabase.from("collection_images" as any).delete().eq("id", id);
+    setImages((prev) => prev.filter((i) => i.id !== id));
+  };
+  const move = async (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= images.length) return;
+    const a = images[i], b = images[j];
+    const newArr = [...images];
+    newArr[i] = { ...b, sort_order: a.sort_order };
+    newArr[j] = { ...a, sort_order: b.sort_order };
+    setImages(newArr);
+    await Promise.all([
+      supabase.from("collection_images" as any).update({ sort_order: a.sort_order }).eq("id", b.id),
+      supabase.from("collection_images" as any).update({ sort_order: b.sort_order }).eq("id", a.id),
+    ]);
+  };
+
+  return (
+    <div className="md:col-span-2 rounded-sm border border-dashed border-border bg-secondary/30 p-4">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground">Galleria realizzazioni ({images.length})</span>
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-sm border border-input bg-background px-3 py-1.5 text-xs uppercase tracking-widest hover:border-brand-brass">
+          <Upload className="h-3.5 w-3.5" />
+          {uploading ? "Caricamento..." : "Aggiungi foto"}
+          <input type="file" accept="image/*" multiple className="hidden" onChange={handleUpload} disabled={uploading} />
+        </label>
+      </div>
+      {loading ? (
+        <div className="text-xs text-muted-foreground">Caricamento...</div>
+      ) : images.length === 0 ? (
+        <div className="text-xs text-muted-foreground">Nessuna foto. Carica le immagini delle realizzazioni di questa collezione.</div>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {images.map((img, i) => (
+            <div key={img.id} className="rounded-sm border border-border bg-background p-2">
+              <img src={img.image_url} alt={img.alt} className="aspect-[4/3] w-full rounded-sm object-cover" />
+              <input value={img.alt} placeholder="Testo alternativo"
+                onChange={(e) => updateAlt(img.id, e.target.value)}
+                onBlur={(e) => saveAlt(img.id, e.target.value)}
+                className="mt-2 w-full rounded-sm border border-input px-2 py-1 text-xs" />
+              <div className="mt-1 flex items-center justify-between">
+                <div className="flex gap-1">
+                  <button onClick={() => move(i, -1)} className="p-1 hover:text-brand-brass"><ArrowUp className="h-3.5 w-3.5" /></button>
+                  <button onClick={() => move(i, 1)} className="p-1 hover:text-brand-brass"><ArrowDown className="h-3.5 w-3.5" /></button>
+                </div>
+                <button onClick={() => remove(img.id)} className="p-1 hover:text-destructive"><Trash2 className="h-3.5 w-3.5" /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -129,7 +229,7 @@ const Admin = () => {
       const collectionResults = await Promise.all(data.collections.map((c) =>
         supabase.from("collections").upsert({
           id: c.id, sort_order: c.sort_order, title: c.title, description: c.description,
-          image_url: c.image_url, span: c.span, cta_href: c.cta_href,
+          image_url: c.image_url, span: c.span, cta_href: c.cta_href, slug: c.slug || null,
         }, { onConflict: "id" })
       ));
       collectionResults.forEach(({ error }, index) => assertSaved(error, `Collezione ${index + 1}`));
@@ -276,15 +376,20 @@ const Admin = () => {
             {data.collections.map((c, i) => (
               <div key={c.id} className="grid gap-3 rounded-sm border border-border bg-background p-4 md:grid-cols-2">
                 <Field label="Titolo" value={c.title} onChange={(v) => updateCollection(i, { title: v })} />
-                <Field label="Link CTA" value={c.cta_href} onChange={(v) => updateCollection(i, { cta_href: v })} />
+                <Field label="Slug URL (es. cucine)" value={c.slug || ""} onChange={(v) => updateCollection(i, { slug: v.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-|-$/g, "") })} />
                 <div className="md:col-span-2"><Field label="Descrizione" value={c.description} onChange={(v) => updateCollection(i, { description: v })} textarea /></div>
                 <Field label='Classi span (es. "lg:col-span-2 lg:row-span-2")' value={c.span} onChange={(v) => updateCollection(i, { span: v })} />
-                <div className="flex items-end justify-end gap-1">
-                  <button onClick={() => moveCollection(i, -1)} className="p-2 hover:text-brand-brass"><ArrowUp className="h-4 w-4" /></button>
-                  <button onClick={() => moveCollection(i, 1)} className="p-2 hover:text-brand-brass"><ArrowDown className="h-4 w-4" /></button>
-                  <button onClick={() => deleteCollection(c.id)} className="p-2 hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                <Field label="Link CTA (fallback se slug vuoto)" value={c.cta_href} onChange={(v) => updateCollection(i, { cta_href: v })} />
+                <div className="md:col-span-2 flex items-end justify-between">
+                  <p className="text-xs text-muted-foreground">{c.slug ? `Pagina dedicata: /collezioni/${c.slug}` : "Senza slug — la card userà il Link CTA."}</p>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => moveCollection(i, -1)} className="p-2 hover:text-brand-brass"><ArrowUp className="h-4 w-4" /></button>
+                    <button onClick={() => moveCollection(i, 1)} className="p-2 hover:text-brand-brass"><ArrowDown className="h-4 w-4" /></button>
+                    <button onClick={() => deleteCollection(c.id)} className="p-2 hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                  </div>
                 </div>
-                <div className="md:col-span-2"><ImageField label="Immagine" value={c.image_url} onChange={(v) => updateCollection(i, { image_url: v })} /></div>
+                <div className="md:col-span-2"><ImageField label="Immagine di copertina" value={c.image_url} onChange={(v) => updateCollection(i, { image_url: v })} /></div>
+                <CollectionGallery collectionId={c.id} />
               </div>
             ))}
             <button onClick={addCollection} className="inline-flex items-center gap-2 rounded-sm border border-dashed border-brand-brass/50 px-4 py-2 text-xs uppercase tracking-widest hover:bg-brand-brass/5">
