@@ -47,20 +47,10 @@ export const AppointmentBooking = () => {
     }
     setLoadingSlots(true);
     setSelectedSlot("");
-    supabase.functions
-      .invoke("appointments-availability", {
-        method: "GET" as never,
-        body: undefined,
-        // @ts-expect-error supabase-js supports query via headers/url; fallback below
-      })
-      .catch(() => null);
-    // Use direct fetch through the supabase functions URL for query params
-    const base = (supabase as any).functionsUrl || `${(supabase as any).supabaseUrl}/functions/v1`;
+    const base = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
+    const apikey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
     fetch(`${base}/appointments-availability?date=${dateParam}`, {
-      headers: {
-        "Content-Type": "application/json",
-        apikey: (supabase as any).supabaseKey,
-      },
+      headers: { "Content-Type": "application/json", apikey },
     })
       .then((r) => r.json())
       .then((data) => {
