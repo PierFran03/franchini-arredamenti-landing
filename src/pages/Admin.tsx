@@ -376,15 +376,20 @@ const Admin = () => {
             {data.collections.map((c, i) => (
               <div key={c.id} className="grid gap-3 rounded-sm border border-border bg-background p-4 md:grid-cols-2">
                 <Field label="Titolo" value={c.title} onChange={(v) => updateCollection(i, { title: v })} />
-                <Field label="Link CTA" value={c.cta_href} onChange={(v) => updateCollection(i, { cta_href: v })} />
+                <Field label="Slug URL (es. cucine)" value={c.slug || ""} onChange={(v) => updateCollection(i, { slug: v.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-|-$/g, "") })} />
                 <div className="md:col-span-2"><Field label="Descrizione" value={c.description} onChange={(v) => updateCollection(i, { description: v })} textarea /></div>
                 <Field label='Classi span (es. "lg:col-span-2 lg:row-span-2")' value={c.span} onChange={(v) => updateCollection(i, { span: v })} />
-                <div className="flex items-end justify-end gap-1">
-                  <button onClick={() => moveCollection(i, -1)} className="p-2 hover:text-brand-brass"><ArrowUp className="h-4 w-4" /></button>
-                  <button onClick={() => moveCollection(i, 1)} className="p-2 hover:text-brand-brass"><ArrowDown className="h-4 w-4" /></button>
-                  <button onClick={() => deleteCollection(c.id)} className="p-2 hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                <Field label="Link CTA (fallback se slug vuoto)" value={c.cta_href} onChange={(v) => updateCollection(i, { cta_href: v })} />
+                <div className="md:col-span-2 flex items-end justify-between">
+                  <p className="text-xs text-muted-foreground">{c.slug ? `Pagina dedicata: /collezioni/${c.slug}` : "Senza slug — la card userà il Link CTA."}</p>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => moveCollection(i, -1)} className="p-2 hover:text-brand-brass"><ArrowUp className="h-4 w-4" /></button>
+                    <button onClick={() => moveCollection(i, 1)} className="p-2 hover:text-brand-brass"><ArrowDown className="h-4 w-4" /></button>
+                    <button onClick={() => deleteCollection(c.id)} className="p-2 hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                  </div>
                 </div>
-                <div className="md:col-span-2"><ImageField label="Immagine" value={c.image_url} onChange={(v) => updateCollection(i, { image_url: v })} /></div>
+                <div className="md:col-span-2"><ImageField label="Immagine di copertina" value={c.image_url} onChange={(v) => updateCollection(i, { image_url: v })} /></div>
+                <CollectionGallery collectionId={c.id} />
               </div>
             ))}
             <button onClick={addCollection} className="inline-flex items-center gap-2 rounded-sm border border-dashed border-brand-brass/50 px-4 py-2 text-xs uppercase tracking-widest hover:bg-brand-brass/5">
