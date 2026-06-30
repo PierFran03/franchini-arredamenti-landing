@@ -59,7 +59,7 @@ const CollectionDetail = () => {
   const gallery = images.filter((i) => i.image_url);
 
   return (
-    <>
+    <SiteDataProvider initial={siteData}>
       <Header />
       <main className="min-h-screen bg-background">
         {/* HERO */}
@@ -127,7 +127,7 @@ const CollectionDetail = () => {
         )}
       </main>
       <Footer />
-    </>
+    </SiteDataProvider>
   );
 };
 
