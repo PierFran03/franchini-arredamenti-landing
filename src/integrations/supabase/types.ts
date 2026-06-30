@@ -56,12 +56,51 @@ export type Database = {
         }
         Relationships: []
       }
+      collection_images: {
+        Row: {
+          alt: string
+          collection_id: string
+          created_at: string
+          id: string
+          image_url: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          alt?: string
+          collection_id: string
+          created_at?: string
+          id?: string
+          image_url?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          alt?: string
+          collection_id?: string
+          created_at?: string
+          id?: string
+          image_url?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_images_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collections: {
         Row: {
           cta_href: string
           description: string
           id: string
           image_url: string
+          slug: string | null
           sort_order: number
           span: string
           title: string
@@ -72,6 +111,7 @@ export type Database = {
           description?: string
           id?: string
           image_url?: string
+          slug?: string | null
           sort_order?: number
           span?: string
           title: string
@@ -82,6 +122,7 @@ export type Database = {
           description?: string
           id?: string
           image_url?: string
+          slug?: string | null
           sort_order?: number
           span?: string
           title?: string
