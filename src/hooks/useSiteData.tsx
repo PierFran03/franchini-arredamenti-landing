@@ -139,13 +139,14 @@ export const DEFAULTS: SiteData = {
     title_line1: "La tua casa,",
     title_line2: "su misura da oltre vent'anni.",
     subtitle: "Cucine, camere, living e armadi disegnati per la tua vita. Tradizione artigiana, design contemporaneo, assistenza completa dal progetto al montaggio.",
-    cta_primary_label: "Richiedi un preventivo",
-    cta_primary_href: "#contatti",
+    cta_primary_label: "Prenota un appuntamento",
+    cta_primary_href: "#prenota",
     cta_secondary_label: "Scopri le collezioni",
     cta_secondary_href: "#collezioni",
     address: "Via Roma 61/63 · San Giorgio Ionico (TA)",
     image_url: "",
   },
+
   story: {
     eyebrow: "La nostra storia",
     title_line1: "Tradizione, design,",
