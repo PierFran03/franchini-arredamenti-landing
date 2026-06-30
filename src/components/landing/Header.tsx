@@ -56,13 +56,14 @@ export const Header = () => {
         </nav>
 
         <a
-          href="tel:+390992233295"
+          href="#prenota"
           className="inline-flex items-center gap-2 rounded-sm bg-brand-brass px-4 py-2.5 text-sm font-medium text-accent-foreground shadow-brass transition-smooth hover:bg-brand-brass-light"
         >
-          <Phone className="h-4 w-4" />
-          <span className="hidden sm:inline">099 22 33 295</span>
-          <span className="sm:hidden">Chiama</span>
+          <CalendarCheck className="h-4 w-4" />
+          <span className="hidden sm:inline">Prenota appuntamento</span>
+          <span className="sm:hidden">Prenota</span>
         </a>
+
       </div>
     </header>
   );
