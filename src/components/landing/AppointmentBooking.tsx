@@ -205,7 +205,13 @@ export const AppointmentBooking = () => {
                 onSelect={setDate}
                 locale={it}
                 weekStartsOn={1}
-                disabled={(d) => d < todayMidnight || d.getDay() === 0}
+                disabled={(d) => {
+                  if (d < todayMidnight) return true;
+                  if (d.getDay() === 0) return true;
+                  // Saturday (6) closed in July (6) and August (7)
+                  if (d.getDay() === 6 && (d.getMonth() === 6 || d.getMonth() === 7)) return true;
+                  return false;
+                }}
                 initialFocus
                 className={cn("p-3 pointer-events-auto")}
               />
