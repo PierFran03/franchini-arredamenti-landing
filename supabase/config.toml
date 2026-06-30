@@ -1,1 +1,7 @@
 project_id = "xgnihjfindmnktkhucit"
+
+[functions.appointments-availability]
+verify_jwt = false
+
+[functions.appointments-book]
+verify_jwt = false
