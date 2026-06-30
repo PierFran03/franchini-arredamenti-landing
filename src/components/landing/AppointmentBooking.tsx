@@ -105,9 +105,10 @@ export const AppointmentBooking = () => {
               : "Impossibile completare la prenotazione.";
         toast({ title: "Prenotazione non riuscita", description: msg, variant: "destructive" });
         // Refresh slots
-        const base = (supabase as any).functionsUrl || `${(supabase as any).supabaseUrl}/functions/v1`;
+        const base = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
+        const apikey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
         fetch(`${base}/appointments-availability?date=${dateParam}`, {
-          headers: { apikey: (supabase as any).supabaseKey },
+          headers: { apikey },
         })
           .then((r) => r.json())
           .then((d) => setSlots(d?.slots || []));
