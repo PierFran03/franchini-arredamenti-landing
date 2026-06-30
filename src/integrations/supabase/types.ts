@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          calendar_event_id: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string
+          slot_end: string
+          slot_start: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          calendar_event_id?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone: string
+          slot_end: string
+          slot_start: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          calendar_event_id?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          slot_end?: string
+          slot_start?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       collections: {
         Row: {
           cta_href: string
