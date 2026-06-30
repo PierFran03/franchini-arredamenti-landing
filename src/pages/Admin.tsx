@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { fetchSiteData, DEFAULTS, SiteData, Collection, Service } from "@/hooks/useSiteData";
+import { fetchSiteData, DEFAULTS, SiteData, Collection, Service, CollectionImage, fetchCollectionImages } from "@/hooks/useSiteData";
 import { uploadSiteImage } from "@/lib/storage";
 import { LogOut, Save, Upload, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import logo from "@/assets/logo-franchini.svg";
@@ -129,7 +129,7 @@ const Admin = () => {
       const collectionResults = await Promise.all(data.collections.map((c) =>
         supabase.from("collections").upsert({
           id: c.id, sort_order: c.sort_order, title: c.title, description: c.description,
-          image_url: c.image_url, span: c.span, cta_href: c.cta_href,
+          image_url: c.image_url, span: c.span, cta_href: c.cta_href, slug: c.slug || null,
         }, { onConflict: "id" })
       ));
       collectionResults.forEach(({ error }, index) => assertSaved(error, `Collezione ${index + 1}`));
