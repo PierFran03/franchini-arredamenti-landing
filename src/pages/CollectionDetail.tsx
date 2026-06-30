@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, X } from "lucide-react";
 import { Header } from "@/components/landing/Header";
 import { Footer } from "@/components/landing/Footer";
-import { fetchCollectionBySlug, type Collection, type CollectionImage } from "@/hooks/useSiteData";
+import { SiteDataProvider, fetchCollectionBySlug, fetchSiteData, DEFAULTS, type SiteData, type Collection, type CollectionImage } from "@/hooks/useSiteData";
 
 const CollectionDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -11,6 +11,11 @@ const CollectionDetail = () => {
   const [collection, setCollection] = useState<Collection | null>(null);
   const [images, setImages] = useState<CollectionImage[]>([]);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [siteData, setSiteData] = useState<SiteData>(DEFAULTS);
+
+  useEffect(() => {
+    fetchSiteData().then((d) => d && setSiteData(d));
+  }, []);
 
   useEffect(() => {
     if (!slug) return;
