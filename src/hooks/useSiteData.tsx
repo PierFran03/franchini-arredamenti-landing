@@ -139,13 +139,14 @@ export const DEFAULTS: SiteData = {
     title_line1: "La tua casa,",
     title_line2: "su misura da oltre vent'anni.",
     subtitle: "Cucine, camere, living e armadi disegnati per la tua vita. Tradizione artigiana, design contemporaneo, assistenza completa dal progetto al montaggio.",
-    cta_primary_label: "Richiedi un preventivo",
-    cta_primary_href: "#contatti",
+    cta_primary_label: "Prenota un appuntamento",
+    cta_primary_href: "#prenota",
     cta_secondary_label: "Scopri le collezioni",
     cta_secondary_href: "#collezioni",
     address: "Via Roma 61/63 · San Giorgio Ionico (TA)",
     image_url: "",
   },
+
   story: {
     eyebrow: "La nostra storia",
     title_line1: "Tradizione, design,",
@@ -164,10 +165,11 @@ export const DEFAULTS: SiteData = {
     title_line2: "Al Primo Sguardo.",
     description: "Scopri le collezioni Le Fablier in promozione esclusiva nel nostro showroom di San Giorgio Ionico. Camere da letto, armadi e living dell'iconico marchio italiano, a condizioni dedicate.",
     cta_primary_label: "Prenota una visita",
-    cta_primary_href: "tel:+390992233295",
+    cta_primary_href: "#prenota",
     cta_secondary_label: "Scrivici ora",
-    cta_secondary_href: "#contatti",
+    cta_secondary_href: "#prenota",
   },
+
   collections_header: {
     eyebrow: "Le nostre collezioni",
     title_line1: "Ogni stanza, una storia",
