@@ -3,7 +3,7 @@ import cucine from "@/assets/category-cucine.jpg";
 import camere from "@/assets/category-camere.jpg";
 import living from "@/assets/category-living.jpg";
 import armadi from "@/assets/category-armadi.jpg";
-import { useSiteData } from "@/hooks/useSiteData";
+import { useSiteData, collectionHref } from "@/hooks/useSiteData";
 
 const FALLBACK_IMAGES = [cucine, camere, armadi, living];
 
@@ -26,7 +26,7 @@ export const Collections = () => {
           {collections.map((c, i) => (
             <a
               key={c.id}
-              href={c.cta_href || "#contatti"}
+              href={collectionHref(c)}
               className={`group relative overflow-hidden rounded-sm shadow-soft transition-elegant hover:shadow-elegant ${c.span} min-h-[280px]`}
             >
               <img
