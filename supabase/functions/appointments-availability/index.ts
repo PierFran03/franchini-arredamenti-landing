@@ -27,11 +27,15 @@ Deno.serve(async (req) => {
       return json({ error: "invalid_date" }, 400);
     }
 
-    // Test if Sunday (closed)
+    // Test if Sunday (closed), or Saturday in July/August (summer closure)
     const sample = new Date(`${date}T12:00:00Z`);
     const dow = dayOfWeekInTZ(sample);
     if (dow === 0) {
       return json({ date, closed: true, reason: "sunday", slots: [] });
+    }
+    const month = Number(date.slice(5, 7));
+    if (dow === 6 && (month === 7 || month === 8)) {
+      return json({ date, closed: true, reason: "summer_saturday", slots: [] });
     }
 
     const slots = buildSlotsForDate(date);
