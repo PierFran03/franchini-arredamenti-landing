@@ -1,33 +1,11 @@
 import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 import { useSiteData } from "@/hooks/useSiteData";
 import { AppointmentBooking } from "./AppointmentBooking";
 
 export const Contact = () => {
-  const { toast } = useToast();
   const { contact } = useSiteData();
-  const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSending(true);
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    const subject = encodeURIComponent("Richiesta informazioni dal sito");
-    const body = encodeURIComponent(
-      `Nome: ${data.get("name")}\nTelefono: ${data.get("phone")}\nEmail: ${data.get("email")}\n\nMessaggio:\n${data.get("message")}`
-    );
-    window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
-    setTimeout(() => {
-      setSending(false);
-      toast({
-        title: "Apertura email in corso",
-        description: "Si aprirà il tuo client di posta con il messaggio precompilato.",
-      });
-      form.reset();
-    }, 600);
-  };
+
 
   return (
     <section id="contatti" className="bg-background py-24 md:py-32">
