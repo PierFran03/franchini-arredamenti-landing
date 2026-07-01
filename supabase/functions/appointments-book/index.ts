@@ -1,10 +1,10 @@
 // deno-lint-ignore-file no-explicit-any
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import {
-  SLOT_DURATION_MIN,
-  SLOT_HOURS_MINUTES,
-  TIMEZONE,
   dayOfWeekInTZ,
+  loadBookingConfig,
+  parseSlot,
+  TIMEZONE,
   zonedDateToUTC,
 } from "../_shared/slots.ts";
 
