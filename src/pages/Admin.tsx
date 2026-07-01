@@ -219,6 +219,7 @@ const Admin = () => {
         saveContent("collections_header", data.collections_header),
         saveContent("contact", data.contact),
         saveContent("footer", data.footer),
+        saveContent("booking", data.booking),
       ]);
       const serviceResults = await Promise.all(data.services.map((s) =>
         supabase.from("services").upsert({
