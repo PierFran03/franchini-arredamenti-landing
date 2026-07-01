@@ -73,8 +73,8 @@ export const Contact = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-3">
-            <AppointmentBooking />
+          <div className="flex flex-col lg:col-span-3 h-full">
+            <AppointmentBooking className="flex-1" />
           </div>
 
         </div>
