@@ -1,7 +1,7 @@
 import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import { useSiteData } from "@/hooks/useSiteData";
 import { AppointmentBooking } from "./AppointmentBooking";
-import showroomFacade from "@/assets/showroom-facade.jpg";
+import showroomFacade from "@/assets/showroom-facade.png";
 
 export const Contact = () => {
   const { contact } = useSiteData();
