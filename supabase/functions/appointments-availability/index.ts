@@ -56,10 +56,6 @@ Deno.serve(async (req) => {
     const now = Date.now();
 
     // 1) Check our DB for already-booked slots
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-    );
     const startBound = slots[0].start_iso;
     const endBound = slots[slots.length - 1].end_iso;
     const { data: booked } = await supabase
