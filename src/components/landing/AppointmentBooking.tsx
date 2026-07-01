@@ -27,6 +27,9 @@ function toDateParam(d: Date) {
 
 export const AppointmentBooking = () => {
   const { toast } = useToast();
+  const { booking } = useSiteData();
+  const allowedWeekdays = new Set(booking.weekdays);
+  const fallbackSlots = booking.slots.map((label) => ({ label, start_iso: "", end_iso: "", available: false }));
   const [date, setDate] = useState<Date | undefined>();
   const [slots, setSlots] = useState<Slot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<string>("");
