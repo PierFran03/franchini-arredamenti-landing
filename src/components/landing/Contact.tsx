@@ -63,13 +63,11 @@ export const Contact = () => {
               <ArrowRight className="h-4 w-4 text-brand-brass transition-smooth group-hover:translate-x-1" />
             </a>
 
-            <div className="overflow-hidden rounded-sm shadow-elegant">
+            <div className="flex-1 min-h-0 overflow-hidden rounded-sm shadow-elegant">
               <img
                 src={showroomFacade}
                 alt="Showroom Franchini Arredamenti — facciata illuminata a San Giorgio Ionico"
-                className="h-auto w-full object-cover transition-smooth hover:scale-[1.02]"
-                width={1280}
-                height={1280}
+                className="h-full w-full object-cover transition-smooth hover:scale-[1.02]"
                 loading="lazy"
               />
             </div>
