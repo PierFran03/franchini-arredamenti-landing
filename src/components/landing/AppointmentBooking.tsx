@@ -189,10 +189,9 @@ export const AppointmentBooking = () => {
     >
 
       <div>
-        <h3 className="font-display text-2xl">Prenota un appuntamento</h3>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Visite in showroom su appuntamento dal <strong>lunedì al venerdì</strong>, dalle{" "}
-          <strong>17:30 alle 20:30</strong>. Scegli il giorno e l'orario che preferisci.
+        <h3 className="font-display text-2xl">{booking.title}</h3>
+        <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">
+          {booking.description}
         </p>
       </div>
 
