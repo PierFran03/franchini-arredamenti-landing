@@ -182,6 +182,7 @@ export async function fetchSiteData(): Promise<SiteData | null> {
       collections_header: { ...DEFAULTS.collections_header, ...(byKey.collections_header || {}) },
       contact: { ...DEFAULTS.contact, ...(byKey.contact || {}) },
       footer: { ...DEFAULTS.footer, ...(byKey.footer || {}) },
+      booking: { ...DEFAULTS.booking, ...(byKey.booking || {}) },
       services: (services.data as any) || DEFAULTS.services,
       collections: (collections.data as any) || DEFAULTS.collections,
     };
