@@ -61,9 +61,8 @@ Deno.serve(async (req) => {
     if (dayOfWeekInTZ(start) === 0) {
       return json({ error: "closed_sunday" }, 400);
     }
-    const month = Number(date.slice(5, 7));
-    if (dayOfWeekInTZ(start) === 6 && (month === 7 || month === 8)) {
-      return json({ error: "closed_summer_saturday" }, 400);
+    if (dayOfWeekInTZ(start) === 6) {
+      return json({ error: "closed_saturday" }, 400);
     }
 
     const supabase = createClient(
