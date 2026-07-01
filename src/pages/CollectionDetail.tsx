@@ -61,6 +61,12 @@ const CollectionDetail = () => {
   return (
     <SiteDataProvider initial={siteData}>
       <Header />
+      <Link
+        to="/#collezioni"
+        className="fixed left-4 top-24 z-40 inline-flex items-center gap-2 rounded-sm bg-background/90 backdrop-blur-md border border-border px-4 py-2 text-sm font-medium text-foreground shadow-soft transition-smooth hover:text-brand-brass"
+      >
+        <ArrowLeft className="h-4 w-4" /> Torna alle collezioni
+      </Link>
       <main className="min-h-screen bg-background">
         {/* HERO */}
         <section className="relative h-[60vh] min-h-[420px] w-full overflow-hidden">
