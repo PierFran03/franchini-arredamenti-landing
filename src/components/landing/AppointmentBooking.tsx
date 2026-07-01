@@ -77,7 +77,7 @@ export const AppointmentBooking = () => {
             title: "Showroom chiuso",
             description: data?.reason === "closure"
               ? "In questo periodo lo showroom è chiuso. Scegli un altro giorno."
-              : "Scegli un giorno tra lunedì e venerdì.",
+              : "Lo showroom non è disponibile in questo giorno. Scegline un altro.",
           });
           return;
         }
