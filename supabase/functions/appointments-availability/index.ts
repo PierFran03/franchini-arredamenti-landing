@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import {
   buildSlotsForDate,
   dayOfWeekInTZ,
+  loadBookingConfig,
   TIMEZONE,
 } from "../_shared/slots.ts";
 
