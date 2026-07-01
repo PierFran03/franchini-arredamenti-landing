@@ -28,20 +28,18 @@ Deno.serve(async (req) => {
       return json({ error: "invalid_date" }, 400);
     }
 
-    // Test if Sunday or Saturday (closed)
-    const sample = new Date(`${date}T12:00:00Z`);
-    const dow = dayOfWeekInTZ(sample);
-    if (dow === 0) {
-      return json({ date, closed: true, reason: "sunday", slots: [] });
-    }
-    if (dow === 6) {
-      return json({ date, closed: true, reason: "saturday", slots: [] });
-    }
-
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+
+    const cfg = await loadBookingConfig(supabase);
+
+    const sample = new Date(`${date}T12:00:00Z`);
+    const dow = dayOfWeekInTZ(sample);
+    if (!cfg.weekdays.includes(dow)) {
+      return json({ date, closed: true, reason: "weekday", slots: [] });
+    }
 
     // Check admin-defined closures
     const { data: closures } = await supabase
@@ -53,7 +51,7 @@ Deno.serve(async (req) => {
       return json({ date, closed: true, reason: "closure", slots: [] });
     }
 
-    const slots = buildSlotsForDate(date);
+    const slots = buildSlotsForDate(date, cfg);
     const now = Date.now();
 
     // 1) Check our DB for already-booked slots
