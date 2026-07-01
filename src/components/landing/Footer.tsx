@@ -24,6 +24,27 @@ export const Footer = () => {
             </div>
           </div>
 
+          <div className="flex items-center gap-3">
+            <a
+              href="https://www.instagram.com/franchini_arredamenti"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram Franchini Arredamenti"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand-cream/20 text-brand-cream/80 transition-smooth hover:border-brand-brass hover:text-brand-brass-light"
+            >
+              <Instagram className="h-4 w-4" />
+            </a>
+            <a
+              href="https://www.facebook.com/share/1CeFg7nM9Q/?mibextid=wwXIfr"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook Franchini Arredamenti"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand-cream/20 text-brand-cream/80 transition-smooth hover:border-brand-brass hover:text-brand-brass-light"
+            >
+              <Facebook className="h-4 w-4" />
+            </a>
+          </div>
+
           <div className="text-center text-sm md:text-right">
             <div>© {new Date().getFullYear()} Franchini Arredamenti — Tutti i diritti riservati</div>
             <div className="mt-1 text-xs">
