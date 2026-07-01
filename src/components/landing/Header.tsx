@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { CalendarCheck } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { ArrowLeft, CalendarCheck } from "lucide-react";
 
 import logo from "@/assets/logo-franchini.svg";
 
