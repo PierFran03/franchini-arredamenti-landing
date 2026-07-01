@@ -57,8 +57,8 @@ export const AppointmentBooking = () => {
         if (data?.closed) {
           setSlots([]);
           toast({
-            title: "Chiuso la domenica",
-            description: "Scegli un giorno tra lunedì e sabato.",
+            title: "Chiuso",
+            description: "Scegli un giorno tra lunedì e venerdì.",
           });
           return;
         }
@@ -172,7 +172,7 @@ export const AppointmentBooking = () => {
       <div>
         <h3 className="font-display text-2xl">Prenota un appuntamento</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          Visite in showroom su appuntamento dal <strong>lunedì al sabato</strong>, dalle{" "}
+          Visite in showroom su appuntamento dal <strong>lunedì al venerdì</strong>, dalle{" "}
           <strong>17:30 alle 20:30</strong>. Scegli il giorno e l'orario che preferisci.
         </p>
       </div>
@@ -208,8 +208,7 @@ export const AppointmentBooking = () => {
                 disabled={(d) => {
                   if (d < todayMidnight) return true;
                   if (d.getDay() === 0) return true;
-                  // Saturday (6) closed in July (6) and August (7)
-                  if (d.getDay() === 6 && (d.getMonth() === 6 || d.getMonth() === 7)) return true;
+                  if (d.getDay() === 6) return true;
                   return false;
                 }}
                 initialFocus
