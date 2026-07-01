@@ -185,7 +185,7 @@ export const AppointmentBooking = ({ className }: { className?: string }) => {
     <form
       id="prenota"
       onSubmit={handleSubmit}
-      className="scroll-mt-24 space-y-6 rounded-sm border border-border bg-card p-8 shadow-soft md:p-10"
+      className={cn("scroll-mt-24 space-y-6 rounded-sm border border-border bg-card p-8 shadow-soft md:p-10", className)}
     >
 
       <div>
