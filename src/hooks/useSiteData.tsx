@@ -124,11 +124,26 @@ export type SiteData = {
 
 const SiteDataContext = createContext<SiteData | null>(null);
 
+const CACHE_KEY = "franchini_site_data_v1";
+
+export function readCachedSiteData(): SiteData | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as SiteData;
+  } catch { return null; }
+}
+
 export const SiteDataProvider = ({ initial, children }: { initial: SiteData; children: ReactNode }) => {
   const [data, setData] = useState<SiteData>(initial);
 
   useEffect(() => {
-    fetchSiteData().then((d) => d && setData(d));
+    fetchSiteData().then((d) => {
+      if (d) {
+        setData(d);
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify(d)); } catch {}
+      }
+    });
   }, []);
 
   return <SiteDataContext.Provider value={data}>{children}</SiteDataContext.Provider>;
