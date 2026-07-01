@@ -1,7 +1,7 @@
 import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import { useSiteData } from "@/hooks/useSiteData";
 import { AppointmentBooking } from "./AppointmentBooking";
-import showroomFacade from "@/assets/showroom-facade.jpg";
+import showroomFacade from "@/assets/showroom-facade.png";
 
 export const Contact = () => {
   const { contact } = useSiteData();
@@ -25,8 +25,8 @@ export const Contact = () => {
           </p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-5">
-          <div className="space-y-6 lg:col-span-2">
+        <div className="grid gap-10 lg:grid-cols-5 lg:items-stretch">
+          <div className="flex flex-col gap-6 lg:col-span-2 h-full">
             <div className="rounded-sm bg-brand-walnut p-8 text-brand-cream shadow-elegant">
               <h3 className="font-display text-2xl">Showroom</h3>
               <div className="mt-6 space-y-5">
@@ -63,20 +63,18 @@ export const Contact = () => {
               <ArrowRight className="h-4 w-4 text-brand-brass transition-smooth group-hover:translate-x-1" />
             </a>
 
-            <div className="overflow-hidden rounded-sm shadow-elegant">
+            <div className="flex-1 min-h-0 overflow-hidden rounded-sm shadow-elegant">
               <img
                 src={showroomFacade}
                 alt="Showroom Franchini Arredamenti — facciata illuminata a San Giorgio Ionico"
-                className="h-auto w-full object-cover transition-smooth hover:scale-[1.02]"
-                width={1280}
-                height={1280}
+                className="h-full w-full object-cover transition-smooth hover:scale-[1.02]"
                 loading="lazy"
               />
             </div>
           </div>
 
-          <div className="lg:col-span-3">
-            <AppointmentBooking />
+          <div className="flex flex-col lg:col-span-3 h-full">
+            <AppointmentBooking className="flex-1" />
           </div>
 
         </div>

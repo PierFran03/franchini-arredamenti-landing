@@ -25,7 +25,7 @@ function toDateParam(d: Date) {
   return `${y}-${m}-${day}`;
 }
 
-export const AppointmentBooking = () => {
+export const AppointmentBooking = ({ className }: { className?: string }) => {
   const { toast } = useToast();
   const { booking } = useSiteData();
   const allowedWeekdays = new Set(booking.weekdays);
@@ -185,7 +185,7 @@ export const AppointmentBooking = () => {
     <form
       id="prenota"
       onSubmit={handleSubmit}
-      className="scroll-mt-24 space-y-6 rounded-sm border border-border bg-card p-8 shadow-soft md:p-10"
+      className={cn("scroll-mt-24 space-y-6 rounded-sm border border-border bg-card p-8 shadow-soft md:p-10", className)}
     >
 
       <div>
