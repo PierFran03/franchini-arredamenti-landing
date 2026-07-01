@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Instagram, Facebook } from "lucide-react";
 import logo from "@/assets/logo-franchini.svg";
 import { useSiteData } from "@/hooks/useSiteData";
 
