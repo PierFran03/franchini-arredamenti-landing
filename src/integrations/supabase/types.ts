@@ -56,6 +56,33 @@ export type Database = {
         }
         Relationships: []
       }
+      calendar_closures: {
+        Row: {
+          created_at: string
+          end_date: string
+          id: string
+          reason: string
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          id?: string
+          reason?: string
+          start_date: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          id?: string
+          reason?: string
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       collection_images: {
         Row: {
           alt: string

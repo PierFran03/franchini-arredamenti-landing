@@ -36,6 +36,19 @@ export const AppointmentBooking = () => {
     slot: string;
   }>(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [closures, setClosures] = useState<Array<{ start_date: string; end_date: string }>>([]);
+
+  useEffect(() => {
+    supabase
+      .from("calendar_closures")
+      .select("start_date, end_date")
+      .then(({ data }) => setClosures((data as any) || []));
+  }, []);
+
+  const isClosed = (d: Date) => {
+    const ds = toDateParam(d);
+    return closures.some((c) => ds >= c.start_date && ds <= c.end_date);
+  };
 
   const dateParam = useMemo(() => (date ? toDateParam(date) : ""), [date]);
 
@@ -57,8 +70,10 @@ export const AppointmentBooking = () => {
         if (data?.closed) {
           setSlots([]);
           toast({
-            title: "Chiuso",
-            description: "Scegli un giorno tra lunedì e venerdì.",
+            title: "Showroom chiuso",
+            description: data?.reason === "closure"
+              ? "In questo periodo lo showroom è chiuso. Scegli un altro giorno."
+              : "Scegli un giorno tra lunedì e venerdì.",
           });
           return;
         }
@@ -209,6 +224,7 @@ export const AppointmentBooking = () => {
                   if (d < todayMidnight) return true;
                   if (d.getDay() === 0) return true;
                   if (d.getDay() === 6) return true;
+                  if (isClosed(d)) return true;
                   return false;
                 }}
                 initialFocus

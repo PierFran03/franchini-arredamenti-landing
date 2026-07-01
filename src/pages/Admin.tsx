@@ -6,6 +6,7 @@ import { fetchSiteData, DEFAULTS, SiteData, Collection, Service, CollectionImage
 import { uploadSiteImage } from "@/lib/storage";
 import { LogOut, Save, Upload, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import logo from "@/assets/logo-franchini.svg";
+import { ClosuresManager } from "@/components/admin/ClosuresManager";
 
 const Field = ({ label, value, onChange, textarea = false }: {
   label: string; value: string; onChange: (v: string) => void; textarea?: boolean;
@@ -434,6 +435,8 @@ const Admin = () => {
           <Field label="Indirizzo" value={data.contact.address} onChange={(v) => updateContent("contact", { address: v })} />
           <div className="md:col-span-2"><Field label="Orari (a capo permessi)" value={data.contact.hours} onChange={(v) => updateContent("contact", { hours: v })} textarea /></div>
         </Section>
+
+        <ClosuresManager />
 
         <Section title="Footer">
           <Field label="P. IVA" value={data.footer.vat} onChange={(v) => updateContent("footer", { vat: v })} />
