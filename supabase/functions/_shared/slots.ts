@@ -1,13 +1,50 @@
-// Shared time helpers for appointment slots in Europe/Rome
-// Slots: 17:30, 18:30, 19:30 (1h each). Days: Mon-Sat.
+// Shared time helpers for appointment slots in Europe/Rome.
+// Slots and weekdays are configurable via the `booking` row in site_content.
 
 export const TIMEZONE = "Europe/Rome";
-export const SLOT_HOURS_MINUTES: Array<[number, number]> = [
-  [17, 30],
-  [18, 30],
-  [19, 30],
-];
-export const SLOT_DURATION_MIN = 60;
+
+export type BookingConfig = {
+  weekdays: number[]; // 0=Sun ... 6=Sat
+  slots: string[]; // "HH:MM"
+  duration_min: number;
+};
+
+export const DEFAULT_BOOKING: BookingConfig = {
+  weekdays: [1, 2, 3, 4, 5],
+  slots: ["17:30", "18:30", "19:30"],
+  duration_min: 60,
+};
+
+export function parseSlot(label: string): [number, number] | null {
+  const m = /^(\d{2}):(\d{2})$/.exec(label);
+  if (!m) return null;
+  return [Number(m[1]), Number(m[2])];
+}
+
+// deno-lint-ignore no-explicit-any
+export async function loadBookingConfig(supabase: any): Promise<BookingConfig> {
+  try {
+    const { data } = await supabase
+      .from("site_content")
+      .select("value")
+      .eq("key", "booking")
+      .maybeSingle();
+    const v = (data?.value ?? {}) as Partial<BookingConfig>;
+    return {
+      weekdays: Array.isArray(v.weekdays) && v.weekdays.length
+        ? v.weekdays.map(Number)
+        : DEFAULT_BOOKING.weekdays,
+      slots: Array.isArray(v.slots) && v.slots.length
+        ? v.slots.filter((s) => typeof s === "string" && parseSlot(s))
+        : DEFAULT_BOOKING.slots,
+      duration_min: Number(v.duration_min) > 0
+        ? Number(v.duration_min)
+        : DEFAULT_BOOKING.duration_min,
+    };
+  } catch {
+    return DEFAULT_BOOKING;
+  }
+}
 
 export function zonedDateToUTC(
   dateStr: string,
@@ -15,7 +52,6 @@ export function zonedDateToUTC(
   minute: number,
   tz = TIMEZONE,
 ): Date {
-  // Build a "wall clock" UTC guess for the given Y-M-D h:m
   const guess = new Date(
     `${dateStr}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00Z`,
   );
@@ -40,7 +76,6 @@ export function zonedDateToUTC(
 }
 
 export function dayOfWeekInTZ(d: Date, tz = TIMEZONE): number {
-  // 0 = Sunday, 1 = Monday, ...
   const wd = new Intl.DateTimeFormat("en-US", {
     timeZone: tz,
     weekday: "short",
@@ -48,10 +83,12 @@ export function dayOfWeekInTZ(d: Date, tz = TIMEZONE): number {
   return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(wd);
 }
 
-export function buildSlotsForDate(dateStr: string) {
-  return SLOT_HOURS_MINUTES.map(([h, m]) => {
+export function buildSlotsForDate(dateStr: string, cfg: BookingConfig) {
+  return cfg.slots.map((label) => {
+    const parsed = parseSlot(label)!;
+    const [h, m] = parsed;
     const start = zonedDateToUTC(dateStr, h, m);
-    const end = new Date(start.getTime() + SLOT_DURATION_MIN * 60 * 1000);
+    const end = new Date(start.getTime() + cfg.duration_min * 60 * 1000);
     return {
       label: `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`,
       start_iso: start.toISOString(),

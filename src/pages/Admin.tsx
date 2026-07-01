@@ -219,6 +219,7 @@ const Admin = () => {
         saveContent("collections_header", data.collections_header),
         saveContent("contact", data.contact),
         saveContent("footer", data.footer),
+        saveContent("booking", data.booking),
       ]);
       const serviceResults = await Promise.all(data.services.map((s) =>
         supabase.from("services").upsert({
@@ -436,7 +437,67 @@ const Admin = () => {
           <div className="md:col-span-2"><Field label="Orari (a capo permessi)" value={data.contact.hours} onChange={(v) => updateContent("contact", { hours: v })} textarea /></div>
         </Section>
 
+        <Section title="Prenotazione appuntamenti">
+          <div className="md:col-span-2">
+            <Field label="Titolo (sopra il calendario)" value={data.booking.title} onChange={(v) => updateContent("booking", { title: v })} />
+          </div>
+          <div className="md:col-span-2">
+            <Field label="Descrizione (sotto il titolo)" value={data.booking.description} onChange={(v) => updateContent("booking", { description: v })} textarea />
+          </div>
+          <div className="md:col-span-2">
+            <span className="mb-2 block text-xs uppercase tracking-widest text-muted-foreground">Giorni disponibili</span>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { d: 1, l: "Lun" }, { d: 2, l: "Mar" }, { d: 3, l: "Mer" },
+                { d: 4, l: "Gio" }, { d: 5, l: "Ven" }, { d: 6, l: "Sab" }, { d: 0, l: "Dom" },
+              ].map(({ d, l }) => {
+                const active = data.booking.weekdays.includes(d);
+                return (
+                  <button key={d} type="button"
+                    onClick={() => {
+                      const next = active
+                        ? data.booking.weekdays.filter((x) => x !== d)
+                        : [...data.booking.weekdays, d].sort();
+                      updateContent("booking", { weekdays: next });
+                    }}
+                    className={`rounded-sm border px-3 py-2 text-xs uppercase tracking-widest transition-smooth ${active ? "border-brand-brass bg-brand-brass text-accent-foreground" : "border-input bg-background text-foreground hover:border-brand-brass"}`}>
+                    {l}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div className="md:col-span-2">
+            <span className="mb-2 block text-xs uppercase tracking-widest text-muted-foreground">Orari degli slot (HH:MM)</span>
+            <div className="space-y-2">
+              {data.booking.slots.map((s, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <input type="time" value={s}
+                    onChange={(e) => {
+                      const arr = [...data.booking.slots]; arr[i] = e.target.value;
+                      updateContent("booking", { slots: arr });
+                    }}
+                    className="rounded-sm border border-input bg-background px-3 py-2 text-sm" />
+                  <button type="button"
+                    onClick={() => updateContent("booking", { slots: data.booking.slots.filter((_, j) => j !== i) })}
+                    className="rounded-sm border border-input p-2 hover:border-destructive hover:text-destructive">
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ))}
+              <button type="button"
+                onClick={() => updateContent("booking", { slots: [...data.booking.slots, "17:30"] })}
+                className="inline-flex items-center gap-1 rounded-sm border border-input px-3 py-1.5 text-xs uppercase tracking-widest hover:border-brand-brass">
+                <Plus className="h-3.5 w-3.5" /> Aggiungi slot
+              </button>
+            </div>
+          </div>
+          <Field label="Durata slot (minuti)" value={String(data.booking.duration_min)} onChange={(v) => updateContent("booking", { duration_min: Number(v) || 60 })} />
+        </Section>
+
         <ClosuresManager />
+
+
 
         <Section title="Footer">
           <Field label="P. IVA" value={data.footer.vat} onChange={(v) => updateContent("footer", { vat: v })} />

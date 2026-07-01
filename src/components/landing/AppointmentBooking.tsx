@@ -8,6 +8,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useSiteData } from "@/hooks/useSiteData";
 
 type Slot = {
   label: string;
@@ -26,6 +27,9 @@ function toDateParam(d: Date) {
 
 export const AppointmentBooking = () => {
   const { toast } = useToast();
+  const { booking } = useSiteData();
+  const allowedWeekdays = new Set(booking.weekdays);
+  const fallbackSlots = booking.slots.map((label) => ({ label, start_iso: "", end_iso: "", available: false }));
   const [date, setDate] = useState<Date | undefined>();
   const [slots, setSlots] = useState<Slot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<string>("");
@@ -73,7 +77,7 @@ export const AppointmentBooking = () => {
             title: "Showroom chiuso",
             description: data?.reason === "closure"
               ? "In questo periodo lo showroom è chiuso. Scegli un altro giorno."
-              : "Scegli un giorno tra lunedì e venerdì.",
+              : "Lo showroom non è disponibile in questo giorno. Scegline un altro.",
           });
           return;
         }
@@ -185,10 +189,9 @@ export const AppointmentBooking = () => {
     >
 
       <div>
-        <h3 className="font-display text-2xl">Prenota un appuntamento</h3>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Visite in showroom su appuntamento dal <strong>lunedì al venerdì</strong>, dalle{" "}
-          <strong>17:30 alle 20:30</strong>. Scegli il giorno e l'orario che preferisci.
+        <h3 className="font-display text-2xl">{booking.title}</h3>
+        <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">
+          {booking.description}
         </p>
       </div>
 
@@ -222,8 +225,7 @@ export const AppointmentBooking = () => {
                 weekStartsOn={1}
                 disabled={(d) => {
                   if (d < todayMidnight) return true;
-                  if (d.getDay() === 0) return true;
-                  if (d.getDay() === 6) return true;
+                  if (!allowedWeekdays.has(d.getDay())) return true;
                   if (isClosed(d)) return true;
                   return false;
                 }}
@@ -239,11 +241,12 @@ export const AppointmentBooking = () => {
             Orario
           </label>
           <div className="grid grid-cols-3 gap-2">
-            {(loadingSlots ? [{ label: "...", start_iso: "", end_iso: "", available: false }, { label: "...", start_iso: "", end_iso: "", available: false }, { label: "...", start_iso: "", end_iso: "", available: false }] : slots.length ? slots : [
-              { label: "17:30", start_iso: "", end_iso: "", available: false },
-              { label: "18:30", start_iso: "", end_iso: "", available: false },
-              { label: "19:30", start_iso: "", end_iso: "", available: false },
-            ]).map((s, i) => {
+            {(loadingSlots
+              ? fallbackSlots.map((s) => ({ ...s, label: "..." }))
+              : slots.length
+                ? slots
+                : fallbackSlots
+            ).map((s, i) => {
               const isSelected = selectedSlot === s.label;
               const disabled = !date || loadingSlots || !s.available;
               return (

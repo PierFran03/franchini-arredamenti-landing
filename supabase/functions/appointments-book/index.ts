@@ -1,10 +1,10 @@
 // deno-lint-ignore-file no-explicit-any
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import {
-  SLOT_DURATION_MIN,
-  SLOT_HOURS_MINUTES,
-  TIMEZONE,
   dayOfWeekInTZ,
+  loadBookingConfig,
+  parseSlot,
+  TIMEZONE,
   zonedDateToUTC,
 } from "../_shared/slots.ts";
 
@@ -45,30 +45,33 @@ Deno.serve(async (req) => {
       return json({ error: "invalid_email" }, 400);
     }
 
-    // Validate slot is one of allowed times
-    const [hStr, mStr] = slot.split(":");
-    const h = Number(hStr);
-    const m = Number(mStr);
-    const allowed = SLOT_HOURS_MINUTES.some(([ah, am]) => ah === h && am === m);
-    if (!allowed) return json({ error: "invalid_slot_time" }, 400);
-
-    const start = zonedDateToUTC(date, h, m);
-    const end = new Date(start.getTime() + SLOT_DURATION_MIN * 60 * 1000);
-
-    if (start.getTime() <= Date.now()) {
-      return json({ error: "slot_in_past" }, 400);
-    }
-    if (dayOfWeekInTZ(start) === 0) {
-      return json({ error: "closed_sunday" }, 400);
-    }
-    if (dayOfWeekInTZ(start) === 6) {
-      return json({ error: "closed_saturday" }, 400);
-    }
+    const parsed = parseSlot(slot);
+    if (!parsed) return json({ error: "invalid_slot_time" }, 400);
+    const [h, m] = parsed;
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+
+    const cfg = await loadBookingConfig(supabase);
+
+    // Validate slot is one of allowed times from admin config
+    const allowed = cfg.slots.some((s) => {
+      const p = parseSlot(s);
+      return p && p[0] === h && p[1] === m;
+    });
+    if (!allowed) return json({ error: "invalid_slot_time" }, 400);
+
+    const start = zonedDateToUTC(date, h, m);
+    const end = new Date(start.getTime() + cfg.duration_min * 60 * 1000);
+
+    if (start.getTime() <= Date.now()) {
+      return json({ error: "slot_in_past" }, 400);
+    }
+    if (!cfg.weekdays.includes(dayOfWeekInTZ(start))) {
+      return json({ error: "closed_weekday" }, 400);
+    }
 
     // Check admin-defined closures
     const { data: closures } = await supabase

@@ -59,6 +59,14 @@ export type FooterInfo = {
   address: string;
 };
 
+export type BookingContent = {
+  title: string;
+  description: string;
+  weekdays: number[]; // 0=Sun ... 6=Sat
+  slots: string[]; // "HH:MM"
+  duration_min: number;
+};
+
 export type Service = {
   id: string;
   sort_order: number;
@@ -118,6 +126,7 @@ export type SiteData = {
   collections_header: CollectionsHeader;
   contact: ContactInfo;
   footer: FooterInfo;
+  booking: BookingContent;
   services: Service[];
   collections: Collection[];
 };
@@ -173,6 +182,7 @@ export async function fetchSiteData(): Promise<SiteData | null> {
       collections_header: { ...DEFAULTS.collections_header, ...(byKey.collections_header || {}) },
       contact: { ...DEFAULTS.contact, ...(byKey.contact || {}) },
       footer: { ...DEFAULTS.footer, ...(byKey.footer || {}) },
+      booking: { ...DEFAULTS.booking, ...(byKey.booking || {}) },
       services: (services.data as any) || DEFAULTS.services,
       collections: (collections.data as any) || DEFAULTS.collections,
     };
@@ -236,6 +246,13 @@ export const DEFAULTS: SiteData = {
     vat: "P. Iva",
     showroom: "San Giorgio Ionico · TA",
     address: "Showroom Via Roma 61/63, 74027 San Giorgio Ionico (TA)",
+  },
+  booking: {
+    title: "Prenota un appuntamento",
+    description: "Visite in showroom su appuntamento dal lunedì al venerdì, dalle 17:30 alle 20:30. Scegli il giorno e l'orario che preferisci.",
+    weekdays: [1, 2, 3, 4, 5],
+    slots: ["17:30", "18:30", "19:30"],
+    duration_min: 60,
   },
   services: [],
   collections: [],
