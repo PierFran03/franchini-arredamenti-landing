@@ -70,6 +70,21 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    // Check admin-defined closures
+    const { data: closures } = await supabase
+      .from("calendar_closures")
+      .select("id")
+      .lte("start_date", date)
+      .gte("end_date", date);
+    if (closures && closures.length > 0) {
+      return json({ error: "closed_period" }, 400);
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+
     // Check existing booking
     const { data: existing } = await supabase
       .from("appointments")
