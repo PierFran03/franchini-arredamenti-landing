@@ -126,6 +126,7 @@ export type SiteData = {
   collections_header: CollectionsHeader;
   contact: ContactInfo;
   footer: FooterInfo;
+  booking: BookingContent;
   services: Service[];
   collections: Collection[];
 };
