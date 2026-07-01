@@ -37,6 +37,21 @@ Deno.serve(async (req) => {
       return json({ date, closed: true, reason: "saturday", slots: [] });
     }
 
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+
+    // Check admin-defined closures
+    const { data: closures } = await supabase
+      .from("calendar_closures")
+      .select("start_date, end_date")
+      .lte("start_date", date)
+      .gte("end_date", date);
+    if (closures && closures.length > 0) {
+      return json({ date, closed: true, reason: "closure", slots: [] });
+    }
+
     const slots = buildSlotsForDate(date);
     const now = Date.now();
 
