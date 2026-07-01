@@ -25,7 +25,7 @@ function toDateParam(d: Date) {
   return `${y}-${m}-${day}`;
 }
 
-export const AppointmentBooking = () => {
+export const AppointmentBooking = ({ className }: { className?: string }) => {
   const { toast } = useToast();
   const { booking } = useSiteData();
   const allowedWeekdays = new Set(booking.weekdays);
