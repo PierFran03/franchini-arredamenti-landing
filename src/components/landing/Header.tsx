@@ -34,7 +34,10 @@ export const Header = () => {
       }`}
     >
       <div className={`container mx-auto flex items-center justify-between px-4 transition-elegant ${scrolled ? "h-20" : "h-28"}`}>
-        <a href="#top" className="flex items-center gap-3" aria-label="Franchini Arredamenti — Home">
+        <a href={isHome ? "#top" : "/"} className="flex items-center gap-3" aria-label="Franchini Arredamenti — Home">
+          {!isHome && (
+            <ArrowLeft className="h-5 w-5 text-brand-cream/90 transition-smooth hover:text-brand-brass" />
+          )}
           <img
             src={logo}
             alt="Logo Franchini Arredamenti"
@@ -50,7 +53,7 @@ export const Header = () => {
           {navItems.map((item) => (
             <a
               key={item.href}
-              href={item.href}
+              href={homeHref(item.href)}
               className={`text-sm tracking-wide transition-smooth hover:text-brand-brass ${
                 scrolled ? "text-foreground/80" : "text-brand-cream/90"
               }`}
@@ -61,7 +64,7 @@ export const Header = () => {
         </nav>
 
         <a
-          href="#prenota"
+          href={homeHref("#prenota")}
           className="inline-flex items-center gap-2 rounded-sm bg-brand-brass px-4 py-2.5 text-sm font-medium text-accent-foreground shadow-brass transition-smooth hover:bg-brand-brass-light"
         >
           <CalendarCheck className="h-4 w-4" />
