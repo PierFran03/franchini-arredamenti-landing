@@ -241,11 +241,12 @@ export const AppointmentBooking = () => {
             Orario
           </label>
           <div className="grid grid-cols-3 gap-2">
-            {(loadingSlots ? [{ label: "...", start_iso: "", end_iso: "", available: false }, { label: "...", start_iso: "", end_iso: "", available: false }, { label: "...", start_iso: "", end_iso: "", available: false }] : slots.length ? slots : [
-              { label: "17:30", start_iso: "", end_iso: "", available: false },
-              { label: "18:30", start_iso: "", end_iso: "", available: false },
-              { label: "19:30", start_iso: "", end_iso: "", available: false },
-            ]).map((s, i) => {
+            {(loadingSlots
+              ? fallbackSlots.map((s) => ({ ...s, label: "..." }))
+              : slots.length
+                ? slots
+                : fallbackSlots
+            ).map((s, i) => {
               const isSelected = selectedSlot === s.label;
               const disabled = !date || loadingSlots || !s.available;
               return (
