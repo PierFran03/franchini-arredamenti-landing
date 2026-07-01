@@ -63,9 +63,11 @@ const CollectionDetail = () => {
       <Header />
       <Link
         to="/#collezioni"
-        className="fixed left-4 top-24 z-40 inline-flex items-center gap-2 rounded-sm bg-background/90 backdrop-blur-md border border-border px-4 py-2 text-sm font-medium text-foreground shadow-soft transition-smooth hover:text-brand-brass"
+        aria-label="Torna alle collezioni"
+        className="fixed left-3 top-20 z-40 inline-flex items-center justify-center rounded-full bg-background/70 backdrop-blur-md border border-border/50 p-2.5 text-foreground shadow-sm transition-smooth hover:bg-background/90 hover:text-brand-brass md:left-4 md:top-24 md:gap-2 md:rounded-sm md:px-3 md:py-1.5 md:text-xs md:font-medium"
       >
-        <ArrowLeft className="h-4 w-4" /> Torna alle collezioni
+        <ArrowLeft className="h-4 w-4" />
+        <span className="hidden md:inline">Torna alle collezioni</span>
       </Link>
       <main className="min-h-screen bg-background">
         {/* HERO */}
