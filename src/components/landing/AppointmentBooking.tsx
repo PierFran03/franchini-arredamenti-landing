@@ -225,8 +225,7 @@ export const AppointmentBooking = () => {
                 weekStartsOn={1}
                 disabled={(d) => {
                   if (d < todayMidnight) return true;
-                  if (d.getDay() === 0) return true;
-                  if (d.getDay() === 6) return true;
+                  if (!allowedWeekdays.has(d.getDay())) return true;
                   if (isClosed(d)) return true;
                   return false;
                 }}
