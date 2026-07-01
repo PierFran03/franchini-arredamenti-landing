@@ -70,8 +70,10 @@ export const AppointmentBooking = () => {
         if (data?.closed) {
           setSlots([]);
           toast({
-            title: "Chiuso",
-            description: "Scegli un giorno tra lunedì e venerdì.",
+            title: "Showroom chiuso",
+            description: data?.reason === "closure"
+              ? "In questo periodo lo showroom è chiuso. Scegli un altro giorno."
+              : "Scegli un giorno tra lunedì e venerdì.",
           });
           return;
         }
