@@ -247,6 +247,13 @@ export const DEFAULTS: SiteData = {
     showroom: "San Giorgio Ionico · TA",
     address: "Showroom Via Roma 61/63, 74027 San Giorgio Ionico (TA)",
   },
+  booking: {
+    title: "Prenota un appuntamento",
+    description: "Visite in showroom su appuntamento dal lunedì al venerdì, dalle 17:30 alle 20:30. Scegli il giorno e l'orario che preferisci.",
+    weekdays: [1, 2, 3, 4, 5],
+    slots: ["17:30", "18:30", "19:30"],
+    duration_min: 60,
+  },
   services: [],
   collections: [],
 };
