@@ -59,6 +59,14 @@ export type FooterInfo = {
   address: string;
 };
 
+export type BookingContent = {
+  title: string;
+  description: string;
+  weekdays: number[]; // 0=Sun ... 6=Sat
+  slots: string[]; // "HH:MM"
+  duration_min: number;
+};
+
 export type Service = {
   id: string;
   sort_order: number;
