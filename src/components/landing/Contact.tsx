@@ -25,8 +25,8 @@ export const Contact = () => {
           </p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-5">
-          <div className="space-y-6 lg:col-span-2">
+        <div className="grid gap-10 lg:grid-cols-5 lg:items-stretch">
+          <div className="flex flex-col gap-6 lg:col-span-2 h-full">
             <div className="rounded-sm bg-brand-walnut p-8 text-brand-cream shadow-elegant">
               <h3 className="font-display text-2xl">Showroom</h3>
               <div className="mt-6 space-y-5">
