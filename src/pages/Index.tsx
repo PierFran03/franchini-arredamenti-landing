@@ -7,10 +7,10 @@ import { Story } from "@/components/landing/Story";
 import { Promo } from "@/components/landing/Promo";
 import { Contact } from "@/components/landing/Contact";
 import { Footer } from "@/components/landing/Footer";
-import { SiteDataProvider, fetchSiteData, DEFAULTS, SiteData } from "@/hooks/useSiteData";
+import { SiteDataProvider, fetchSiteData, DEFAULTS, SiteData, readCachedSiteData } from "@/hooks/useSiteData";
 
 const Index = () => {
-  const [data, setData] = useState<SiteData>(DEFAULTS);
+  const [data, setData] = useState<SiteData>(() => readCachedSiteData() || DEFAULTS);
   useEffect(() => {
     fetchSiteData().then((d) => d && setData(d));
   }, []);

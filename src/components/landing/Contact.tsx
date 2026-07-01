@@ -1,6 +1,7 @@
 import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import { useSiteData } from "@/hooks/useSiteData";
 import { AppointmentBooking } from "./AppointmentBooking";
+import showroomFacade from "@/assets/showroom-facade.jpg";
 
 export const Contact = () => {
   const { contact } = useSiteData();
@@ -61,6 +62,17 @@ export const Contact = () => {
               </span>
               <ArrowRight className="h-4 w-4 text-brand-brass transition-smooth group-hover:translate-x-1" />
             </a>
+
+            <div className="overflow-hidden rounded-sm shadow-elegant">
+              <img
+                src={showroomFacade}
+                alt="Showroom Franchini Arredamenti — facciata illuminata a San Giorgio Ionico"
+                className="h-auto w-full object-cover transition-smooth hover:scale-[1.02]"
+                width={1280}
+                height={1280}
+                loading="lazy"
+              />
+            </div>
           </div>
 
           <div className="lg:col-span-3">
