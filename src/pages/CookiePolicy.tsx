@@ -43,7 +43,7 @@ const CookiePolicy = () => {
             </section>
             <section>
               <h2 className="text-2xl font-semibold mb-3">Contatti</h2>
-              <p>Per qualsiasi domanda relativa a questa Cookie Policy, puoi contattarci all'indirizzo <a href="mailto:info@stilcucine.com" className="underline">info@stilcucine.com</a>.</p>
+              <p>Per qualsiasi domanda relativa a questa Cookie Policy, puoi contattarci all'indirizzo <a href="mailto:info@franchiniarredamenti.it" className="underline">info@franchiniarredamenti.it</a>.</p>
             </section>
           </div>
         </main>
