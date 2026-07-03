@@ -50,9 +50,13 @@ export const Footer = () => {
             <div className="mt-1 text-xs">
               {footer.vat} — {footer.address}
             </div>
-            <div className="mt-2 text-xs">
-              <Link to="/auth" className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Area riservata</Link>
-            </div>
+            <div className="mt-2 text-xs flex items-center justify-center md:justify-end gap-3">
+  <Link to="/privacy-policy" className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Privacy Policy</Link>
+  <span className="text-brand-cream/30">·</span>
+  <Link to="/cookie-policy" className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Cookie Policy</Link>
+  <span className="text-brand-cream/30">·</span>
+  <Link to="/auth" className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Area riservata</Link>
+</div>
           </div>
         </div>
       </div>
