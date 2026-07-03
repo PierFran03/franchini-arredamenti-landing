@@ -20,7 +20,7 @@ const PrivacyPolicy = () => {
           <div className="space-y-8 leading-relaxed">
             <section>
               <h2 className="text-2xl font-semibold mb-3">1. Titolare del trattamento</h2>
-              <p>Il titolare del trattamento dei dati è <strong>GI.ERRE srl</strong>, con sede in compl. Nord Z.I, 74027 San Giorgio Jonico (TA). Per qualsiasi informazione può contattarci all'indirizzo email <a href="mailto:info@stilcucine.com" className="underline">info@stilcucine.com</a> o al numero <a href="tel:+393483573099" className="underline">348 357 3099</a>.</p>
+              <p>Il titolare del trattamento dei dati è <strong>GI.ERRE srl</strong>, con sede in compl. Nord Z.I, 74027 San Giorgio Jonico (TA). Per qualsiasi informazione può contattarci all'indirizzo email <a href="mailto:info@franchiniarredamenti.it" className="underline">info@stilcucine.com</a> o al numero <a href="tel:+393483573099" className="underline">348 357 3099</a>.</p>
             </section>
             <section>
               <h2 className="text-2xl font-semibold mb-3">2. Tipologie di dati raccolti</h2>
