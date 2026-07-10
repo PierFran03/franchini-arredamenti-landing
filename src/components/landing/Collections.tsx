@@ -27,7 +27,7 @@ export const Collections = () => {
             <a
               key={c.id}
               href={collectionHref(c)}
-              className={`group relative overflow-hidden rounded-sm shadow-soft transition-elegant hover:shadow-elegant ${c.span} min-h-[280px]`}
+              className={`group relative overflow-hidden rounded-sm shadow-soft transition-elegant hover:shadow-elegant ${c.span} min-h-[280px] lg:min-h-0`}
             >
               <img
                 src={c.image_url || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length]}
