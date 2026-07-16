@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { Instagram, Facebook } from "lucide-react";
 import logo from "@/assets/logo-franchini.svg";
 import { useSiteData } from "@/hooks/useSiteData";
+import { useCookieConsent } from "@/hooks/useCookieConsent";
 
 export const Footer = () => {
   const { footer } = useSiteData();
+  const { openPreferences } = useCookieConsent();
   return (
     <footer className="border-t border-brand-walnut/20 bg-brand-walnut-deep py-12 text-brand-cream/70">
       <div className="container mx-auto px-4">
@@ -54,6 +56,8 @@ export const Footer = () => {
   <Link to="/privacy-policy" className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Privacy Policy</Link>
   <span className="text-brand-cream/30">·</span>
   <Link to="/cookie-policy" className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Cookie Policy</Link>
+  <span className="text-brand-cream/30">·</span>
+  <button onClick={openPreferences} className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Preferenze cookie</button>
   <span className="text-brand-cream/30">·</span>
   <Link to="/auth" className="text-brand-cream/50 hover:text-brand-brass-light transition-smooth">Area riservata</Link>
 </div>

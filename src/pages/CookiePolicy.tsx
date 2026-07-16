@@ -26,20 +26,20 @@ const CookiePolicy = () => {
               <h2 className="text-2xl font-semibold mb-3">Tipologie di cookie utilizzati</h2>
               <div className="mb-5">
                 <h3 className="font-semibold mb-1">Cookie tecnici (necessari)</h3>
-                <p>Necessari al corretto funzionamento del sito. Non richiedono il consenso dell'utente in quanto strettamente indispensabili per la fornitura del servizio.</p>
-              </div>
-              <div className="mb-5">
-                <h3 className="font-semibold mb-1">Cookie analitici</h3>
-                <p>Utilizzati per raccogliere informazioni in forma aggregata sul numero di utenti e su come visitano il sito. Vengono attivati solo previo consenso.</p>
+                <p>Necessari al corretto funzionamento del sito (es. mantenere la sessione dell'area riservata e ricordare le preferenze cookie espresse). Non richiedono il consenso dell'utente in quanto strettamente indispensabili per la fornitura del servizio.</p>
               </div>
               <div>
-                <h3 className="font-semibold mb-1">Cookie di terze parti</h3>
-                <p>Possono essere installati cookie da servizi esterni (es. Google Maps, social network) per il corretto funzionamento di componenti del sito.</p>
+                <h3 className="font-semibold mb-1">Cookie analitici</h3>
+                <p>Al momento questo sito non utilizza cookie analitici o di profilazione. Se in futuro dovessimo attivarli, verranno attivati solo previo suo consenso esplicito tramite il banner cookie, e questa pagina sarà aggiornata di conseguenza.</p>
               </div>
             </section>
             <section>
+              <h2 className="text-2xl font-semibold mb-3">Font e risorse del sito</h2>
+              <p>I caratteri tipografici (Google Fonts) sono ospitati direttamente sul nostro server e non vengono caricati dai server di Google: la visita al sito non comporta quindi l'invio di dati a Google per questo scopo. Il link a Google Maps presente nella pagina Contatti apre una scheda separata sul sito di Google Maps e non è un componente incorporato nella pagina.</p>
+            </section>
+            <section>
               <h2 className="text-2xl font-semibold mb-3">Gestione delle preferenze</h2>
-              <p>Puoi disabilitare i cookie direttamente dalle impostazioni del tuo browser (Chrome, Firefox, Safari, Edge). Tieni presente che la disabilitazione dei cookie tecnici potrebbe compromettere il corretto funzionamento del sito.</p>
+              <p>Alla prima visita le viene mostrato un banner per accettare, rifiutare o personalizzare i cookie non necessari. Può cambiare la sua scelta in qualsiasi momento cliccando su "Preferenze cookie" nel piè di pagina del sito, oppure disabilitare i cookie dalle impostazioni del suo browser (Chrome, Firefox, Safari, Edge). Tenga presente che la disabilitazione dei cookie tecnici potrebbe compromettere il corretto funzionamento del sito.</p>
             </section>
             <section>
               <h2 className="text-2xl font-semibold mb-3">Contatti</h2>

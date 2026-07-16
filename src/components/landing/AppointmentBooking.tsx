@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { CalendarIcon, Clock, ArrowRight, CheckCircle2 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -40,6 +41,7 @@ export const AppointmentBooking = ({ className }: { className?: string }) => {
     slot: string;
   }>(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [closures, setClosures] = useState<Array<{ start_date: string; end_date: string }>>([]);
 
   useEffect(() => {
@@ -104,6 +106,14 @@ export const AppointmentBooking = ({ className }: { className?: string }) => {
       });
       return;
     }
+    if (!privacyAccepted) {
+      toast({
+        title: "Informativa privacy",
+        description: "Devi accettare l'informativa privacy per prenotare un appuntamento.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSubmitting(true);
     try {
       const { data, error } = await supabase.functions.invoke("appointments-book", {
@@ -135,6 +145,7 @@ export const AppointmentBooking = ({ className }: { className?: string }) => {
       }
       setConfirmed({ date: dateParam, slot: selectedSlot });
       setForm({ name: "", email: "", phone: "", message: "" });
+      setPrivacyAccepted(false);
       setSelectedSlot("");
       toast({
         title: "Appuntamento confermato",
@@ -331,19 +342,34 @@ export const AppointmentBooking = ({ className }: { className?: string }) => {
         />
       </div>
 
+      <label htmlFor="bk-privacy" className="flex items-start gap-3 text-xs text-muted-foreground">
+        <input
+          required
+          id="bk-privacy"
+          type="checkbox"
+          checked={privacyAccepted}
+          onChange={(e) => setPrivacyAccepted(e.target.checked)}
+          className="mt-0.5 h-4 w-4 shrink-0 rounded-sm border-input accent-brand-brass"
+        />
+        <span>
+          Ho letto e accetto l'{" "}
+          <Link to="/privacy-policy" target="_blank" className="underline hover:text-foreground">
+            Informativa Privacy
+          </Link>
+          . I dati inseriti (nome, email, telefono e messaggio) sono usati per gestire la
+          prenotazione e vengono condivisi con i fornitori che ci permettono di erogare questo
+          servizio (calendario appuntamenti Google e infrastruttura del sito).
+        </span>
+      </label>
+
       <button
         type="submit"
-        disabled={submitting || !date || !selectedSlot}
+        disabled={submitting || !date || !selectedSlot || !privacyAccepted}
         className="group inline-flex w-full items-center justify-center gap-2 rounded-sm bg-brand-brass px-8 py-4 text-sm font-medium uppercase tracking-widest text-accent-foreground shadow-brass transition-smooth hover:bg-brand-brass-light disabled:opacity-60 sm:w-auto"
       >
         {submitting ? "Conferma in corso..." : "Conferma appuntamento"}
         <ArrowRight className="h-4 w-4 transition-smooth group-hover:translate-x-1" />
       </button>
-
-      <p className="text-xs text-muted-foreground">
-        Inviando la richiesta accetti di essere ricontattato. I tuoi dati non saranno
-        condivisi con terzi.
-      </p>
     </form>
   );
 };

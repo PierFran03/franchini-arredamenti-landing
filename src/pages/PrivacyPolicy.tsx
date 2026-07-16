@@ -58,6 +58,17 @@ const PrivacyPolicy = () => {
               <h2 className="text-2xl font-semibold mb-3">7. Cookie</h2>
               <p>Per informazioni sull'utilizzo dei cookie consulti la nostra <Link to="/cookie-policy" className="underline">Cookie Policy</Link>.</p>
             </section>
+            <section>
+              <h2 className="text-2xl font-semibold mb-3">8. Destinatari dei dati e fornitori terzi</h2>
+              <p>I suoi dati personali possono essere trattati, per nostro conto e nei limiti necessari a fornire il servizio richiesto, dai seguenti fornitori:</p>
+              <ul className="list-disc pl-6 mt-2 space-y-1">
+                <li><strong>Supabase Inc.</strong> — hosting del database e delle funzioni che gestiscono il sito e le prenotazioni.</li>
+                <li><strong>Google LLC (Google Calendar)</strong> — creazione dell'appuntamento in calendario e invio dell'invito via email, quando prenota una visita in showroom.</li>
+                <li><strong>Netlify, Inc.</strong> — hosting ed erogazione del sito web.</li>
+              </ul>
+              <p className="mt-2">Alcuni di questi fornitori possono conservare i dati su server situati fuori dallo Spazio Economico Europeo; in tal caso il trasferimento avviene sulla base di garanzie adeguate previste dal GDPR (es. clausole contrattuali standard della Commissione Europea).</p>
+              <p className="mt-2">I suoi dati non vengono venduti né ceduti a fini di marketing di terzi.</p>
+            </section>
           </div>
         </main>
         <Footer />
